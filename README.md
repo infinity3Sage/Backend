@@ -47,3 +47,8 @@ Proyecto Django para I3 web
   * LIMITE_USUARIOS_INFINITY=200
     
 - Ajustar configuración del core (settings.py) por si faltase alguna cosa para desplegar en local
+
+# Subida a producción
+
+- Para subir a la rama deploy se deberán de subir todos los ficheros exceptuando el .gitignore y el setting.py ya que cada rama debería de tener el suyo. **Únicamente se subirán los cambios de settings.py cuando se haya tocado alguna cosa que se deba migrar a producción, y NUNCA se subirá el fichero completo, si nosolo los cambios realizados ya que las variables deben seguiir apuntando al servidor de producción**
+- **¡¡OJO!!** si hemos instalado alguna librería más que no esté en producción pon pip install, se deberá de instalar también en el entorno virtual del servidor de producción cuando se desplieguen cambios.
