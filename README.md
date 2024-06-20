@@ -22,8 +22,8 @@ Proyecto Django para I3 web
 
 - Cuando se realice el pull por primera vez, se deberá crear un entorno virtual usando python. Para ello deberá situarse en la carpeta raíz del proyecto y ejecutar el siguiente comando "virtualenv env"
 - Una vez creada la carpeta env, deberemos entrar al entorno virtual para instalar los requerimientos:
-  * En Linux o Mac, active el nuevo entorno python: source env_name/bin/activate
-  * O en Windows: .\env_name\Scripts\activate
+  * En Linux o Mac, active el nuevo entorno python: source env/bin/activate
+  * O en Windows: .\env\Scripts\activate
   * Instala los requirements: pip instal -r requirements.txt
     
 - Una vez configurado todo, se deberá crear el fichero ".env" en el directorio raíz con las variables de entorno para que settings.py pueda usarlas. Dentro de el definiremos como minimo las variables por defecto:
