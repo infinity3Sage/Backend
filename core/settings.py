@@ -17,7 +17,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 # Hosts permitidos
 DEBUG = env('DEBUG')
-ALLOWED_HOSTS = env('ALLOWED_HOST_DEPLOY').split(' ')
+ALLOWED_HOSTS = env('ALLOWED_HOST_DEV').split(' ')
 
 SUSCRIPCION_NIVELES = env('SUSCRIPCION_NIVELES').split(' ')
 
@@ -224,9 +224,9 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-CORS_ORIGIN_WHITELIST = env('CORS_ORIGIN_WHITELIST_DEPLOY').split(' ')
+CORS_ORIGIN_WHITELIST = env('CORS_ORIGIN_WHITELIST_DEV').split(' ')
 
-CSRF_TRUSTED_ORIGINS = env('CSRF_TRUSTED_ORIGINS_DEPLOY').split(' ')
+CSRF_TRUSTED_ORIGINS = env('CSRF_TRUSTED_ORIGINS_DEV').split(' ')
 
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 
