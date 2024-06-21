@@ -1,7 +1,7 @@
 # Backend
 Proyecto Django para I3 web
 
-# Requisitos para el proyecto Django
+# Requisitos para el proyecto Django en VM producción
 
 - Tener instalado Python 3 y PIP
     * Python 3 se debe descargar e instalar de su página oficial: https://www.python.org/downloads/
@@ -11,7 +11,7 @@ Proyecto Django para I3 web
        > pip --version
        
 - Tener instalado virtualenv usando "pip install virtualenv"
-- Tener instalado servidor postgrSQL y crear por terminal una base de datos con la siguiente información: --> **En el excel de conexiones hay una posible configuración por si se quiere usar**
+- Tener instalado servidor postgrSQL y crear por terminal una base de datos con la siguiente información: --> **En el excel de conexiones está la configuración de producción para PostgreSQL**
   * User	(el que tu quieras para tu base de datos en local) 
   * Pass	(La que tu consideres para tu base de datos en local)
   * Host	localhost
@@ -51,4 +51,5 @@ Proyecto Django para I3 web
 # Subida a producción
 
 - Para subir a la rama deploy se deberán de subir todos los ficheros exceptuando el .gitignore y el setting.py ya que cada rama debería de tener el suyo. **Únicamente se subirán los cambios de settings.py cuando se haya tocado alguna cosa que se deba migrar a producción, y NUNCA se subirá el fichero completo, si nosolo los cambios realizados ya que las variables deben seguiir apuntando al servidor de producción**
-- **¡¡OJO!!** si hemos instalado alguna librería más que no esté en producción pon pip install, se deberá de instalar también en el entorno virtual del servidor de producción cuando se desplieguen cambios.
+- **¡¡OJO!!** si hemos instalado alguna librería más que no esté en producción con pip install, se deberá de instalar también en el entorno virtual del servidor de producción cuando se desplieguen cambios.
+- Cuando subamos la nueva versión al servidor de producción se deberán de desplegar los ficheros en la ruta /opt/django-app/
