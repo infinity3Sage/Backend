@@ -1,5 +1,5 @@
 from django import forms
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from django_ckeditor_5.widgets import CKEditor5Widget
 from django.contrib import admin
 from .models import Empresa, EmpresaModulo, EmpresaSubmodulo
 from apps.planta.models import  Planta
@@ -10,7 +10,7 @@ class PlantaInline(admin.TabularInline):
     can_delete = True
 
 class EmpresaAdminForm(forms.ModelForm):
-    descripcion = forms.CharField(widget=CKEditorUploadingWidget(config_name='default'))
+    descripcion = forms.CharField(widget=CKEditor5Widget(config_name='default'))
 
     class Meta:
         model = Empresa

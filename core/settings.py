@@ -53,21 +53,26 @@ THIRD_PARTY_APPS = [
     'social_django',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',  
-    'ckeditor',
-    'ckeditor_uploader',
+    'django_ckeditor_5',
     ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': [
-            'heading', '|',
-            'bold', 'italic', 'underline', 'strikethrough', '|',
-            'link', '|',
-            'bulletedList', 'numberedList', '|',
-            'blockQuote'
-        ],
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
+                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+    },
+    'extends': {
+        'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 
+                    'underline', 'strikethrough', 'code', 'subscript', 'superscript', 'highlight', 
+                    'codeBlock', 'bulletedList', 'numberedList', 'todoList', 'blockQuote', 
+                    'imageUpload', 'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 
+                    'mediaEmbed', 'removeFormat', 'insertTable'],
+        'image': {
+            'toolbar': ['imageTextAlternative', 'imageTitle', '|', 'imageStyle:alignLeft', 
+                        'imageStyle:full', 'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side'],
+        },
         'heading': {
             'options': [
                 {'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph'},
@@ -78,6 +83,7 @@ CKEDITOR_5_CONFIGS = {
         }
     }
 }
+CKEDITOR_5_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
 
@@ -178,8 +184,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 
 

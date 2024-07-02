@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
-from ckeditor_uploader.fields import RichTextUploadingField
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Empresa(models.Model):
@@ -12,7 +12,7 @@ class Empresa(models.Model):
     nombre = models.CharField(max_length=255,default='', null=False, blank=False)
     api_endpoint = models.URLField(max_length=500, null=True, blank=True)
     logo = models.ImageField(upload_to='logos/', null=True, blank=True)
-    descripcion = RichTextUploadingField(null=True, blank=True)
+    descripcion = CKEditor5Field('Text', config_name='extends')
     imagen_background = models.ImageField(upload_to='backgrounds/', null=True, blank=True)
     imagen_corporativa = models.ImageField(upload_to='corporativas/', null=True, blank=True)
     modulos = models.ManyToManyField('modulos.Modulo', through='EmpresaModulo')
