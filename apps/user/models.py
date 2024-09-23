@@ -1,62 +1,58 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-
-# Create your models here.
+from django.conf import settings
+from apps.empresa.models import Empresa, EmpresaModulo, EmpresaSubmodulo
+from apps.modulos.models import Modulo, Submodulo, Submodulo2
 
 class UserAccountManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
-         if not email:
-            raise ValueError('Users must have an email address')
-         
-         email = self.normalize_email(email)
-         user = self.model(email=email, **extra_fields)
-         user.set_password(password)
-         user.save()
-
-         return user
-    
-    def create_superuser(self, email, password, **extra_fields):
-        user = self.create_user(email,password, **extra_fields)
-
-        user.is_superuser = True
-        user.is_staff = True
+    def create_user(self, username, password=None, **extra_fields):
+        if not username:
+            raise ValueError('Los usuarios deben tener un nombre de usuario')
+        user = self.model(username=username, **extra_fields)
+        user.set_password(password)
         user.save()
-
         return user
     
+    def create_superuser(self, username, password, **extra_fields):
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_staff', True)
+        return self.create_user(username, password, **extra_fields)
+
 class UserAccount(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=255, unique=True,default="", null=False, blank=False)
-    first_name = models.CharField(max_length=255,default="", null=False, blank=False)
-    last_name = models.CharField(max_length=255,default="", null=False, blank=False)
+    username = models.CharField(max_length=150, unique=True, default="", null=True, blank=True)
+    email = models.EmailField(max_length=255, unique=True, default="", null=True, blank=True)
+    first_name = models.CharField(max_length=255, default="", null=True, blank=True)
+    last_name = models.CharField(max_length=255, default="", null=True, blank=True)
     cliente_sage = models.CharField(max_length=255, null=True, blank=True)
     telefono = models.CharField(max_length=15, null=True, blank=True)
     direccion = models.CharField(max_length=255, null=True, blank=True)
-    empresa = models.ForeignKey('empresa.Empresa', related_name='usuarios', default="", on_delete=models.RESTRICT , null=False, blank=False)
+    empresa = models.ForeignKey(Empresa, related_name='usuarios', on_delete=models.RESTRICT, null=True, blank=True)
     imagen_usuario = models.ImageField(upload_to='usuarios/', null=True, blank=True)
-    # TODO: Separación
-    codigo_empleado = models.CharField(max_length=255, null=True, blank=True) #*Nuevo_app
-    codigo_moneda = models.CharField(max_length= 255, null=True, blank=True) #*Nuevo_app
-    default_planta = models.ForeignKey('planta.Planta', related_name='default_planta',default="", on_delete=models.RESTRICT, null=True, blank=True) #*Nuevo_app, default
-    id_colaborador = models.CharField(max_length=255, null=True, blank=True) #*Nuevo_app
-    idioma = models.CharField(max_length=255, null=True, blank=True) #*Nuevo_app
-    default_poolid = models.CharField(max_length=255, null=True, blank=True) #*Nuevo_app, default
-    ubicacion_contenedores = models.CharField(max_length=255, null=True, blank=True) #*Nuevo_app
-    ubicacion_destino_produccion = models.CharField(max_length=255, null=True, blank=True) #*Nuevo_app
-    # TODO: Fin de separación
-
+    modulos = models.ManyToManyField(Modulo, through='UsuarioModulo')
+    submodulos = models.ManyToManyField(Submodulo, through='UsuarioSubmodulo')
+    submodulos2 = models.ManyToManyField(Submodulo2, through='UsuarioSubmodulo2')
+    codigo_empleado = models.CharField(max_length=255, null=True, blank=True)
+    codigo_moneda = models.CharField(max_length=255, null=True, blank=True)
+    default_planta = models.ForeignKey('planta.Planta', related_name='default_planta', on_delete=models.RESTRICT, null=True, blank=True)
+    id_colaborador = models.CharField(max_length=255, null=True, blank=True)
+    idioma = models.CharField(max_length=255, null=True, blank=True)
+    default_poolid = models.CharField(max_length=255, null=True, blank=True)
+    ubicacion_contenedores = models.CharField(max_length=255, null=True, blank=True)
+    ubicacion_destino_produccion = models.CharField(max_length=255, null=True, blank=True)
     is_active = models.BooleanField(default=True, null=False, blank=False)
     is_staff = models.BooleanField(default=False, null=False, blank=False)
-
     objects = UserAccountManager()
+ 
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name','cliente_sage','empresa']
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'cliente_sage', 'empresa']
 
     def __str__(self):
-        return self.email
+        return self.username
     
     def can_modify_access(self):
-        return self.email == 'infinity3-sage@nunsys.com'
+        return self.username == 'Gnis'
     
     def clean(self):
         if self.default_planta and self.empresa and self.default_planta.empresa != self.empresa:
@@ -96,5 +92,18 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     def delete(self, *args, **kwargs):
         empresa = self.empresa
         super().delete(*args, **kwargs)
-        empresa.usuarios_creados = empresa.usuarios.count()
-        empresa.save()
+        if empresa:
+            empresa.usuarios_creados = empresa.usuarios.count()
+            empresa.save()
+
+class UsuarioModulo(models.Model):
+    usuario = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
+
+class UsuarioSubmodulo(models.Model):
+    usuario = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    submodulo = models.ForeignKey(Submodulo, on_delete=models.CASCADE)
+
+class UsuarioSubmodulo2(models.Model):
+    usuario = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    submodulo = models.ForeignKey(Submodulo2, on_delete=models.CASCADE)

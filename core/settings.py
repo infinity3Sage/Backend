@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+from xml.etree.ElementInclude import default_loader
 import environ
 from datetime import timedelta
 
@@ -235,10 +236,22 @@ CORS_ORIGIN_WHITELIST = env('CORS_ORIGIN_WHITELIST_DEV').split(' ')
 
 CSRF_TRUSTED_ORIGINS = env('CSRF_TRUSTED_ORIGINS_DEV').split(' ')
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'authorization',
+    'content-type',
+    'origin',
+    'x-csrftoken',
+    'x-requested-with',
+    'access-control-allow-origin',
+]
+
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 
 DJOSER = {
-    'LOGIN_FIELD': 'email',
+    'LOGIN_FIELD': 'username',
     'USER_CREATE_PASSWORD_RETYPE': True,
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,

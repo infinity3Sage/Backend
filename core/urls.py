@@ -10,7 +10,9 @@ urlpatterns = [
     path('auth/', include('djoser.urls.jwt')),
     path('auth/', include('djoser.social.urls')),
 
-    # path('api/user/', include('apps.user.urls')),
+    path('api/empresa/', include('apps.empresa.urls')),
+    path('api/', include('apps.user.urls')),
+    path('api/', include('apps.modulos.urls')),
 
     path('admin/', admin.site.urls),
     path('ckeditor5/', include('django_ckeditor_5.urls')),

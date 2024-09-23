@@ -14,3 +14,11 @@ class Submodulo(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+class Submodulo2(models.Model):
+    submodulo = models.ForeignKey(Submodulo, related_name='submodulos2', on_delete=models.CASCADE, null=False, blank=False)
+    nombre = models.CharField(max_length=255, null=False, blank=False)
+    descripcion = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.nombre

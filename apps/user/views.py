@@ -1,20 +1,35 @@
-# from django.shortcuts import render
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from rest_framework.permissions import IsAuthenticated
-# from .serializers import UserSerializer
-# from rest_framework import status
-# from .models import UserAccount
+# apps/user/views.py
+from rest_framework import generics, permissions
+from .models import UserAccount
+from .serializers import UserSerializer, UserCreateSerializer
 
-# class UserDetailView(APIView):
-#     permission_classes = [IsAuthenticated]
+class UserListAPIView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]  # Solo usuarios autenticados pueden acceder
 
-#     def get(self, request,iduser, format=None):
-#         if UserAccount.objects.filter(id_user=iduser).exists():
-            
-#             user = UserAccount.objects.get(id_user=iduser)
-#             serializer = UserSerializer(user)
+    def get_queryset(self):
+        # Filtra los usuarios por la empresa del usuario actualmente autenticado
+        user_company = self.request.user.empresa
+        if user_company:
+            return UserAccount.objects.filter(empresa=user_company)
+        return UserAccount.objects.none()  # Retorna vacío si el usuario no tiene una empresa
 
-#             return Response({'user':serializer.data})
-#         else:
-#             return Response({'error':'user doesnt exist'}, status=status.HTTP_404_NOT_FOUND)
+class UserCreateAPIView(generics.CreateAPIView):
+    serializer_class = UserCreateSerializer
+    permission_classes = [permissions.IsAuthenticated]  # Solo usuarios autenticados pueden crear nuevos usuarios
+
+    def perform_create(self, serializer):
+        # Establece la empresa del nuevo usuario como la del usuario que realiza la solicitud
+        serializer.save(empresa=self.request.user.empresa)
+
+class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserAccount.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]  # Solo usuarios autenticados pueden acceder
+
+    def get_object(self):
+        # Permite solo al usuario autenticado acceder y actualizar sus propios datos
+        obj = super().get_object()
+        if self.request.user.is_staff or self.request.user == obj:
+            return obj
+        raise permissions.PermissionDenied("You do not have permission to access this resource.")

@@ -12,19 +12,23 @@ from apps.empresa.models import Empresa
 
 User = get_user_model()
 
-def create_superuser():
-    # Obtener la instancia de la empresa
-    empresa = Empresa.objects.get(nombre='NUNSYS')
+def create_user():
+    # Obtener la instancia de la empresa (esto es un ejemplo, ajusta según tu lógica)
+    empresa = Empresa.objects.get(nombre='SANYCESS')
     
-    # Crear el superusuario
-    User.objects.create_superuser(
-        email='infinity3-sage@nunsys.com',
-        password='passWordAquÍ!',
-        first_name='Infinity',
-        last_name='By_Sage',
+    # Crear un nuevo usuario
+    new_user = User.objects.create_user(
+        username='Sanycess',  # Aquí debe ser un valor de tipo str para el username
+        email=' sanycessadmin@gmail.com',
+        password='12345678.',
+        first_name='Marcos',
+        last_name='Romero',
         cliente_sage='admin',
         empresa=empresa
     )
 
+    # Imprimir el usuario creado para verificar
+    print(f'Usuario creado: {new_user}')
+
 if __name__ == '__main__':
-    create_superuser()
+    create_user()
