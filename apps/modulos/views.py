@@ -1,12 +1,24 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
-from .models import Modulo, Submodulo
+from rest_framework import generics
 from apps.empresa.models import Empresa, EmpresaModulo, EmpresaSubmodulo
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Modulo, Submodulo, Submodulo2
 from .serializers import ModuloSerializer, SubmoduloSerializer, Submodulo2Serializer
+
+class ModuloListView(generics.ListAPIView):
+    queryset = Modulo.objects.all()
+    serializer_class = ModuloSerializer
+
+class SubmoduloListView(generics.ListAPIView):
+    queryset = Submodulo.objects.all()
+    serializer_class = SubmoduloSerializer
+
+class Submodulo2ListView(generics.ListAPIView):
+    queryset = Submodulo2.objects.all()
+    serializer_class = Submodulo2Serializer
 
 @login_required
 def modify_access(request, empresa_id):
