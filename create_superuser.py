@@ -14,19 +14,21 @@ User = get_user_model()
 
 def create_user():
     # Obtener la instancia de la empresa (esto es un ejemplo, ajusta según tu lógica)
-    empresa = Empresa.objects.get(nombre='SANYCESS')
+    empresa = Empresa.objects.get(nombre='NUNSYS')
     
     # Crear un nuevo usuario
     new_user = User.objects.create_user(
-        username='Sanycess',  # Aquí debe ser un valor de tipo str para el username
-        email=' sanycessadmin@gmail.com',
-        password='12345678.',
-        first_name='Marcos',
-        last_name='Romero',
+        username='alfred',  # Aquí debe ser un valor de tipo str para el username
+        email='asd@gmail.com',
+        password='123456789.',
+        first_name='Alfred',
+        last_name='Comanescu',
         cliente_sage='admin',
         empresa=empresa
     )
-
+    new_user.is_superuser = True
+    new_user.is_staff = True
+    new_user.save()
     # Imprimir el usuario creado para verificar
     print(f'Usuario creado: {new_user}')
 

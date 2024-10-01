@@ -12,7 +12,7 @@ class UserCreateSerializer(BaseUserCreateSerializer):
 
     class Meta(BaseUserCreateSerializer.Meta):
         model = User
-        fields = ('username', 'password', 'email', 'first_name', 'last_name', 'empresa')
+        fields = ('username', 'password', 'email', 'first_name', 'last_name','interno','partner','empresa')
 
     def validate(self, attrs):
         empresa_nombre = attrs.get('empresa')
@@ -52,6 +52,8 @@ class UserSerializer(BaseUserSerializer):
         instance.email = validated_data.get('email', instance.email)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.interno = validated_data.get('interno', instance.interno)
+        instance.partner = validated_data.get('partner', instance.partner)
         instance.cliente_sage = validated_data.get('cliente_sage', instance.cliente_sage)
         instance.telefono = validated_data.get('telefono', instance.telefono)
         instance.direccion = validated_data.get('direccion', instance.direccion)

@@ -52,7 +52,7 @@ class EmpresaAdmin(admin.ModelAdmin):
     plantas_list.short_description = 'Plantas'
  
     def save_model(self, request, obj, form, change):
-        if request.user.email != 'adrgenis@gmail.com':
+        if request.user.email !=  'asd@gmail.com':
             self.message_user(request, "No tienes permiso para modificar los accesos de los módulos y submódulos.", level='error')
             return
        
@@ -91,12 +91,12 @@ class EmpresaModuloAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'modulo')
  
     def has_change_permission(self, request, obj=None):
-        if request.user.email != 'adrgenis@gmail.com':
+        if request.user.email !=  'asd@gmail.com':
             return False
         return super().has_change_permission(request, obj)
  
     def has_delete_permission(self, request, obj=None):
-        if request.user.email != 'adrgenis@gmail.com':
+        if request.user.email !=  'asd@gmail.com':
             return False
         return super().has_delete_permission(request, obj)
    
@@ -104,12 +104,12 @@ class EmpresaSubmoduloAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'submodulo')
  
     def has_change_permission(self, request, obj=None):
-        if request.user.email != 'adrgenis@gmail.com':
+        if request.user.email !=  'asd@gmail.com':
             return False
         return super().has_change_permission(request, obj)
  
     def has_delete_permission(self, request, obj=None):
-        if request.user.email != 'adrgenis@gmail.com':
+        if request.user.email !=  'asd@gmail.com':
             return False
         return super().has_delete_permission(request, obj)
     
@@ -117,12 +117,12 @@ class EmpresaSubmodulo2Admin(admin.ModelAdmin):
     list_display = ('empresa', 'submodulo2')
  
     def has_change_permission(self, request, obj=None):
-        if request.user.email != 'adrgenis@gmail.com':
+        if request.user.email !=  'asd@gmail.com':
             return False
         return super().has_change_permission(request, obj)
  
     def has_delete_permission(self, request, obj=None):
-        if request.user.email != 'adrgenis@gmail.com':
+        if request.user.email !=  'asd@gmail.com':
             return False
         return super().has_delete_permission(request, obj)
  
