@@ -12,7 +12,7 @@ class UserCreateSerializer(BaseUserCreateSerializer):
 
     class Meta(BaseUserCreateSerializer.Meta):
         model = User
-        fields = ('username', 'password', 'email', 'first_name', 'last_name', 'empresa')
+        fields = '__all__'
 
     def validate(self, attrs):
         empresa_nombre = attrs.get('empresa')

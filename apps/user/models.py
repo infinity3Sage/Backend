@@ -36,7 +36,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     submodulos2 = models.ManyToManyField(Submodulo2, through='UsuarioSubmodulo2')
     codigo_empleado = models.CharField(max_length=255, null=True, blank=True)
     codigo_moneda = models.CharField(max_length=255, null=True, blank=True)
-    default_planta = models.ForeignKey('planta.Planta', related_name='default_planta', on_delete=models.RESTRICT, null=True, blank=True)
+    default_planta = models.CharField(max_length=255, null=True, blank=True)
     id_colaborador = models.CharField(max_length=255, null=True, blank=True)
     idioma = models.CharField(max_length=255, null=True, blank=True)
     default_poolid = models.CharField(max_length=255, null=True, blank=True)
