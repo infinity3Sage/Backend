@@ -2,8 +2,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Empresa, EmpresaModulo, EmpresaSubmodulo, EmpresaSubmodulo2
-from .serializers import EmpresaSerializer, ModuloSerializer, SubmoduloSerializer, Submodulo2Serializer
-from .serializers import EmpresaModuloSerializer, EmpresaSubmoduloSerializer, EmpresaSubmodulo2Serializer
+from .serializers import EmpresaSerializer, ModuloSerializer, EmpresaModuloSerializer, EmpresaSubmoduloSerializer, EmpresaSubmodulo2Serializer
 
 # Existing views for listing and detail of Empresa
 class EmpresaListAPIView(generics.ListAPIView):
@@ -13,6 +12,42 @@ class EmpresaListAPIView(generics.ListAPIView):
 class EmpresaDetailAPIView(generics.RetrieveAPIView):
     queryset = Empresa.objects.all()
     serializer_class = EmpresaSerializer
+
+class ModuloListView(generics.ListAPIView):
+    queryset = EmpresaModulo.objects.all()
+    serializer_class = EmpresaModuloSerializer
+
+class SubmoduloListView(generics.ListAPIView):
+    queryset = EmpresaSubmodulo.objects.all()
+    serializer_class = EmpresaSubmoduloSerializer
+
+class Submodulo2ListView(generics.ListAPIView):
+    queryset = EmpresaSubmodulo2.objects.all()
+    serializer_class = EmpresaSubmodulo2Serializer
+
+# New view for getting the empresa of the logged-in user
+@api_view(['GET'])
+def get_empresa_for_user(request):
+    user = request.user
+    try:
+        # Suponiendo que hay una relación entre el usuario y la empresa
+        empresa = Empresa.objects.get(usuarios_creados=user)
+        
+        # Obtener la información de módulos, submódulos, y submódulos2 activos
+        modulos_activos = EmpresaModulo.objects.filter(empresa=empresa, activo=True)
+        submodulos_activos = EmpresaSubmodulo.objects.filter(empresa=empresa, activo=True)
+        submodulos2_activos = EmpresaSubmodulo2.objects.filter(empresa=empresa, activo=True)
+        
+        empresa_data = {
+            'empresa': EmpresaSerializer(empresa).data,
+            'modulos': EmpresaModuloSerializer(modulos_activos, many=True).data,
+            'submodulos': EmpresaSubmoduloSerializer(submodulos_activos, many=True).data,
+            'submodulos2': EmpresaSubmodulo2Serializer(submodulos2_activos, many=True).data,
+        }
+
+        return Response(empresa_data)
+    except Empresa.DoesNotExist:
+        return Response({'error': 'Empresa not found'}, status=404)
 
 # New views for updating activation status
 @api_view(['PUT'])
